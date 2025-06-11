@@ -120,11 +120,13 @@ function isValidUrl(url) {
 
 async function getAIAnswer(base64Image) {
   const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
-  // Get API key from environment variable
-  const API_KEY = process.env.OPENAI_API_KEY;
+  
+  // Get API key from Chrome storage
+  const result = await chrome.storage.local.get('openai_api_key');
+  const API_KEY = result.openai_api_key;
 
   if (!API_KEY) {
-    throw new Error('OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.');
+    throw new Error('OpenAI API key not found. Please set your API key in the extension settings.');
   }
 
   try {
